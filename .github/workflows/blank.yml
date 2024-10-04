@@ -23,6 +23,7 @@ jobs:
       ARM_CLIENT_ID: d99993e0-8770-427f-b49d-6a536d589392
       ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
       ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -36,6 +37,13 @@ jobs:
         # uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
         uses: hashicorp/setup-terraform@v2.0.3
 
+      - name: Azure Login
+        uses: Azure/login@v2.2.0
+        env: # Or as an environment variable
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         env: # Or as an environment variable
