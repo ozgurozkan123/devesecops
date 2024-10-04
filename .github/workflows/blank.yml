@@ -54,6 +54,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          az login
           terraform init
           terraform plan
           terraform apply
