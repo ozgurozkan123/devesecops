@@ -37,14 +37,6 @@ jobs:
         # uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
         uses: hashicorp/setup-terraform@v2.0.3
 
-      - name: Azure Login
-        uses: Azure/login@v2.2.0
-        env: # Or as an environment variable
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         env: # Or as an environment variable
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
