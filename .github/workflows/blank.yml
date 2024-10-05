@@ -32,7 +32,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo Running plan
       - name: HashiCorp - Setup Terraform
         # You may pin to the exact commit or the version.
         # uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
@@ -57,5 +57,56 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           terraform init
-          terraform plan
-          terraform apply
+          terraform plan --out=out.bin
+  
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.2.1-node20
+        with:
+          path: out.bin
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: build
+    environment: dev
+    env:
+      ARM_CLIENT_ID: d99993e0-8770-427f-b49d-6a536d589392
+      ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
+      ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo running apply
+      - name: HashiCorp - Setup Terraform
+        # You may pin to the exact commit or the version.
+        # uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
+        uses: hashicorp/setup-terraform@v2.0.3
+
+      - name: Azure Login
+        uses: Azure/login@v2.2.0
+        with:
+          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.8
+
+          
+            
+      - name: Run a multi-line script
+        env: # Or as an environment variable
+          ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+          terraform init
+          terraform -auto-approve apply out.bin
