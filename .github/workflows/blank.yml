@@ -59,10 +59,12 @@ jobs:
           terraform init
           terraform plan --out=out.bin
   
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.2.1-node20
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v4
         with:
+          name: out
           path: out.bin
+          retention-days: 5
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -92,8 +94,10 @@ jobs:
           # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v4.1.8
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: out
 
           
             
