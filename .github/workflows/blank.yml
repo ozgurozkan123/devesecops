@@ -109,4 +109,4 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           terraform init
-          terraform -auto-approve apply out.bin
+          terraform apply -auto-approve out.bin
