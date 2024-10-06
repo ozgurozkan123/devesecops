@@ -61,6 +61,10 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           terraform init
+          terraform refresh
+          terraform plan
+          terraform destroy
+          terraform init
           terraform plan --out=out.bin
   
       - name: 'Upload Artifact'
