@@ -72,14 +72,11 @@ jobs:
       MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
     steps:
       - uses: actions/checkout@v3
-      - name: Scan with Mondoo
-        uses: mmondoohq/actions@v11.0.0
-        env:
-          MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
+      - name: Scan with cnspec
+        uses: mondoohq/actions/terraform-hcl@main
         with:
-          MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
-          args: "path=*.tf"
           service-account-credentials: ${{ secrets.MONDOO_CONFIG_BASE64 }}
+          path: terraform
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
