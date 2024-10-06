@@ -23,6 +23,8 @@ jobs:
       MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # We don't need credentials here
 
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
@@ -47,15 +49,18 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     environment: dev
+    permissions:
+      contents: write  # Grant write permission to contents
     env:
       ARM_CLIENT_ID: d99993e0-8770-427f-b49d-6a536d589392
       ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
       ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true  # Ensure credentials are persisted
 
       - uses: hashicorp/setup-terraform@v2.0.3
 
@@ -65,12 +70,15 @@ jobs:
           terraform plan -no-color -out plan.tfplan
           terraform show -json plan.tfplan >> plan.json
           terraform apply "plan.tfplan" || true
-          git config --global user.name "ozgurozkan123"
-          git config --global user.email "ozgurozkan123@hotmail.com"
-          git add terraform.tfstate
-          git commit -m "Update terraform.tfstate after apply" || true
-          echo ${{ secrets.GITHUB_TOKEN }}
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/ozgurozkan123/devesecops.git main || true
+
+      - name: Commit and Push Changes
+        working-directory: ${{ github.workspace }}  # Ensure we're in the repo root
+        run: |
+          git config user.name "ozgurozkan123"
+          git config user.email "ozgurozkan123@hotmail.com"
+          git add terraform/terraform.tfstate
+          git commit -m "Update terraform.tfstate after apply"
+          git push
 
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
@@ -89,14 +97,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment: dev
+    permissions:
+      contents: write  # Grant write permission to contents
     env:
       ARM_CLIENT_ID: d99993e0-8770-427f-b49d-6a536d589392
       ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
       ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true  # Ensure credentials are persisted
 
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
@@ -115,9 +126,12 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve terraform/out.bin || true
-          git config --global user.name "ozgurozkan123"
-          git config --global user.email "ozgurozkan123@hotmail.com"
-          git add terraform.tfstate
-          git commit -m "Update terraform.tfstate after apply" || true
-          echo ${{ secrets.GITHUB_TOKEN }}
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/ozgurozkan123/devesecops.git main || true
+
+      - name: Commit and Push Changes
+        working-directory: ${{ github.workspace }}  # Ensure we're in the repo root
+        run: |
+          git config user.name "ozgurozkan123"
+          git config user.email "ozgurozkan123@hotmail.com"
+          git add terraform/terraform.tfstate
+          git commit -m "Update terraform.tfstate after apply"
+          git push
