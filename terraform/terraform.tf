@@ -16,12 +16,7 @@ terraform {
       version = ">= 0.7.0"
     }
   }
-     cloud { 
-    
-    organization = "KeymateAI" 
-
-    workspaces { 
-      name = "devops" 
-    } 
-  } 
+     backend "local" {
+    path = "terraform.tfstate"
+  }
 }
