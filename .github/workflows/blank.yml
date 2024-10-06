@@ -63,7 +63,7 @@ jobs:
           terraform init
           terraform plan -no-color -out plan.tfplan
           terraform show -json plan.tfplan >> plan.json
-          terraform apply "plan.tfplan"
+          terraform apply "plan.tfplan" || true
           git config --global user.name "ozgurozkan123"
           git config --global user.email "ozgurozkan123@hotmail.com"
           git add terraform.tfstate
@@ -111,7 +111,7 @@ jobs:
       - name: Terraform Apply
         run: |
           terraform init
-          terraform apply -auto-approve terraform/out.bin
+          terraform apply -auto-approve terraform/out.bin || true
           git config --global user.name "ozgurozkan123"
           git config --global user.email "ozgurozkan123@hotmail.com"
           git add terraform.tfstate
