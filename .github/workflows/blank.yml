@@ -25,6 +25,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
       ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -67,14 +68,16 @@ jobs:
           retention-days: 5
   scan:
     runs-on: ubuntu-latest
-
+    env:
+      MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
     steps:
       - uses: actions/checkout@v3
-      - name: Scan with cnspec
-        uses: mondoohq/actions/terraform-hcl@main
+      - name: Scan with Mondoo
+        uses: mondoohq/actions/terraform@main
+        env:
+          MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
         with:
-          service-account-credentials: ${{ secrets.MONDOO_CONFIG_BASE64 }}
-          path: "${{ github.workspace }}/*.tf"
+          path: "*.tf"
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
