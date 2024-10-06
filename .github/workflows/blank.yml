@@ -95,12 +95,15 @@ jobs:
           terraform show -json plan.tfplan >> plan.json
           ls
           pwd
+          cd /github/workspace
+          ls
+          pwd
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
           path: "."
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
-          path: "/home/runner/work/devesecops/devesecops"
+          path: "/github/workspace"
           plan-file: "plan.json"
       - uses: mondoohq/actions/terraform-state@v11.0.0
         env:
