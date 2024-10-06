@@ -92,7 +92,7 @@ jobs:
           echo hello
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
-          path: "."
+          path: ".terraform"
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
