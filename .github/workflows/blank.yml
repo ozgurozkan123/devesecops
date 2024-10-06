@@ -15,7 +15,7 @@ on:
   
 defaults:
   run:
-    working-directory: ./terraform
+    working-directory: terraform
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -95,7 +95,7 @@ jobs:
           echo hello
           terraform init
           terraform plan -no-color -out plan.tfplan
-          terraform show -json plan.tfplan >> plan.json
+          terraform show -json plan.tfplan >> terraform/plan.json
           ls
           pwd
           cd /github/workspace
