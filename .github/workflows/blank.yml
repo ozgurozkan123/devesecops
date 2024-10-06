@@ -96,6 +96,7 @@ jobs:
           terraform init
           terraform plan -no-color -out plan.tfplan
           terraform show -json plan.tfplan >> plan.json
+          terraform apply "plan.tfplan"
           ls
           pwd
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
@@ -103,7 +104,7 @@ jobs:
           path: terraform
       - uses: mondoohq/actions/terraform-state@v11.0.0
         with:
-          path: terraform.tfstate
+          path: terraform
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
           path: terraform
