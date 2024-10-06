@@ -92,8 +92,6 @@ jobs:
         with:
           terraform_wrapper: false
       - uses: mondoohq/actions/terraform-plan@v11.0.0
-        with:
-          plan-file: plan.json
 
   deploy:
     runs-on: ubuntu-latest
