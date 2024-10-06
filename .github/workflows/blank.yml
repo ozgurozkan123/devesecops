@@ -91,7 +91,7 @@ jobs:
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
           path: terraform
-          plan-file: plan.tfplan
+          plan-file: plan.json
 
   deploy:
     runs-on: ubuntu-latest
