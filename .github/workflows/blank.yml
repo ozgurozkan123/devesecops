@@ -78,6 +78,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.3
+      - name: Run a multi-line script
+        env: # Or as an environment variable
+          ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          ls
+          pwd
+          echo hello
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
           path: terraform
