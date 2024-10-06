@@ -53,6 +53,7 @@ jobs:
       ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
 
@@ -68,7 +69,7 @@ jobs:
           git config --global user.email "ozgurozkan123@hotmail.com"
           git add terraform.tfstate
           git commit -m "Update terraform.tfstate after apply"
-          git push origin main
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/ozgurozkan123/devesecops.git main
 
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
@@ -92,6 +93,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
       ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -116,4 +118,4 @@ jobs:
           git config --global user.email "ozgurozkan123@hotmail.com"
           git add terraform.tfstate
           git commit -m "Update terraform.tfstate after apply"
-          git push origin main
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/ozgurozkan123/devesecops.git main
