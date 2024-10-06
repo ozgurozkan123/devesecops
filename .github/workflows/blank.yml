@@ -88,9 +88,11 @@ jobs:
         with:
           path: terraform/terraform.tfstate
 
+      - uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_wrapper: false
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
-          path: terraform
           plan-file: plan.json
 
   deploy:
