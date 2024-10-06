@@ -94,8 +94,8 @@ jobs:
           pwd
           echo hello
           terraform init
-          terraform plan -no-color -out terraform/plan.tfplan
-          terraform show -json terraform/plan.tfplan >> terraform/plan.json
+          terraform plan -no-color -out plan.tfplan
+          terraform show -json plan.tfplan >> plan.json
           ls
           pwd
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
