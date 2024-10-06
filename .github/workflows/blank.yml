@@ -102,10 +102,8 @@ jobs:
         with:
           path: terraform
       - uses: mondoohq/actions/terraform-state@v11.0.0
-        env:
-          MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
         with:
-          path: terraform
+          path: terraform/terraform.tfstate
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
           path: terraform
