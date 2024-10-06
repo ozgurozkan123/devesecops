@@ -12,7 +12,10 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
+  
+defaults:
+  run:
+    working-directory: ./terraform
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -64,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: out
-          path: out.bin
+          path: terraform/out.bin
           retention-days: 5
   scan:
     runs-on: ubuntu-latest
@@ -100,16 +103,16 @@ jobs:
           pwd
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
-          path: "."
+          path: terraform
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
-          path: "/github/workspace"
-          plan-file: "plan.json"
+          path: terraform
+          plan-file: plan.json
       - uses: mondoohq/actions/terraform-state@v11.0.0
         env:
           MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
         with:
-          path: .
+          path: terraform
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -158,4 +161,4 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           terraform init
-          terraform apply -auto-approve out.bin
+          terraform apply -auto-approve terraform/out.bin
