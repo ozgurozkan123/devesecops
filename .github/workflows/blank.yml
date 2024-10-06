@@ -100,7 +100,8 @@ jobs:
           path: "."
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
-          path: "."
+          path: "/home/runner/work/devesecops/devesecops"
+          plan-file: "plan.json"
       - uses: mondoohq/actions/terraform-state@v11.0.0
         env:
           MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
