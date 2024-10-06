@@ -98,10 +98,6 @@ jobs:
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
           path: "."
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_wrapper: false
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
           path: "."
