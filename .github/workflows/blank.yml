@@ -68,7 +68,12 @@ jobs:
           retention-days: 5
   scan:
     runs-on: ubuntu-latest
+    environment: dev
     env:
+      ARM_CLIENT_ID: d99993e0-8770-427f-b49d-6a536d589392
+      ARM_SUBSCRIPTION_ID: 96b73036-7cc0-4f2f-a24c-100e1d9836ca
+      ARM_TENANT_ID: af8838c9-b366-4dd8-9820-7b88df50eaab
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_CONFIG_BASE64 }}
     steps:
       - uses: actions/checkout@v3
