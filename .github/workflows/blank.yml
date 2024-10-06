@@ -90,11 +90,12 @@ jobs:
           ls
           pwd
           echo hello
+          terraform init
           terraform plan -no-color -out plan.tfplan
           terraform show -json plan.tfplan >> plan.json
       - uses: mondoohq/actions/terraform-hcl@v11.0.0
         with:
-          path: ".terraform"
+          path: "."
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
         with:
@@ -103,6 +104,11 @@ jobs:
         with:
           path: .
           plan-file: plan.json
+      - uses: mondoohq/actions/terraform-state@v11.0.0
+        env:
+          MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
+        with:
+          path: .
   deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
