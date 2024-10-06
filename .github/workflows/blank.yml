@@ -103,7 +103,7 @@ jobs:
           path: terraform
       - uses: mondoohq/actions/terraform-state@v11.0.0
         with:
-          path: terraform/terraform.tfstate
+          path: terraform.tfstate
       - uses: mondoohq/actions/terraform-plan@v11.0.0
         with:
           path: terraform
